@@ -1,5 +1,7 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/database';
+import { Category } from './Category';
+import { Level } from './Level';
 
 export interface LessonAttributes {
   id: number;
@@ -32,6 +34,9 @@ export class Lesson extends Model<LessonAttributes, LessonCreationAttributes> im
 
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
+
+  declare category?: Category;
+  declare level?: Level;
 }
 
 Lesson.init(

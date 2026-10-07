@@ -17,7 +17,7 @@ export class DailyController {
   static async getByDate(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.user!.id;
-      const { date } = req.params;
+      const date = req.params.date as string;
       const data = await DailyService.getTodayDailyLesson(userId, date);
       ApiResponse.success(res, data, `Daily sentences for ${date}`);
     } catch (error) {

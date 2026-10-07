@@ -32,7 +32,7 @@ export class LearningController {
   static async startSentence(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.user!.id;
-      const sentenceId = parseInt(req.params.sentenceId, 10);
+      const sentenceId = parseInt(req.params.sentenceId as string, 10);
       const result = await LearningService.startSentence(userId, sentenceId);
       ApiResponse.success(res, result, 'Sentence viewing started');
     } catch (error) {
@@ -43,7 +43,7 @@ export class LearningController {
   static async completeSentence(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.user!.id;
-      const sentenceId = parseInt(req.params.sentenceId, 10);
+      const sentenceId = parseInt(req.params.sentenceId as string, 10);
       const result = await LearningService.completeSentence(userId, sentenceId);
       ApiResponse.success(res, result, 'Sentence completed successfully');
     } catch (error) {

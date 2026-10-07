@@ -36,7 +36,7 @@ export class ActivityController {
   static async getDayDetail(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.user!.id;
-      const { date } = req.params;
+      const date = req.params.date as string;
       const dayData = await ActivityService.getDayDetail(userId, date);
       ApiResponse.success(res, dayData, `Learning details for ${date}`);
     } catch (error) {

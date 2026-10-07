@@ -44,7 +44,7 @@ export class VocabularyController {
 
   static async getById(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
-      const id = parseInt(req.params.id, 10);
+      const id = parseInt(req.params.id as string, 10);
       const vocab = await Vocabulary.findByPk(id, {
         include: [{ model: Sentence, as: 'sentences' }],
       });
@@ -62,7 +62,7 @@ export class VocabularyController {
 export class QuizController {
   static async getByLesson(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
-      const lessonId = parseInt(req.params.lessonId, 10);
+      const lessonId = parseInt(req.params.lessonId as string, 10);
       const quizzes = await QuizService.getLessonQuizzes(lessonId);
       ApiResponse.success(res, quizzes, 'Lesson quizzes retrieved');
     } catch (error) {
@@ -73,7 +73,7 @@ export class QuizController {
   static async submitQuiz(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.user!.id;
-      const quizId = parseInt(req.params.quizId, 10);
+      const quizId = parseInt(req.params.quizId as string, 10);
       const { selectedOptionId } = req.body;
       const result = await QuizService.submitQuizAnswer(userId, quizId, selectedOptionId);
       ApiResponse.success(res, result, 'Quiz answer evaluated');
@@ -97,7 +97,7 @@ export class BookmarkController {
   static async addBookmark(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.user!.id;
-      const sentenceId = parseInt(req.params.sentenceId, 10);
+      const sentenceId = parseInt(req.params.sentenceId as string, 10);
       const { note } = req.body;
       const bookmark = await BookmarkService.addBookmark(userId, sentenceId, note);
       ApiResponse.success(res, bookmark, 'Sentence bookmarked successfully', 201);
@@ -109,7 +109,7 @@ export class BookmarkController {
   static async removeBookmark(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.user!.id;
-      const sentenceId = parseInt(req.params.sentenceId, 10);
+      const sentenceId = parseInt(req.params.sentenceId as string, 10);
       const removed = await BookmarkService.removeBookmark(userId, sentenceId);
       ApiResponse.success(res, { removed, sentenceId }, 'Bookmark removed successfully');
     } catch (error) {

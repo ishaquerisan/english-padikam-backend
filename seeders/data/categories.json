@@ -1,0 +1,254 @@
+[
+  {
+    "id": 1,
+    "name": "Daily Conversation",
+    "slug": "daily-conversation",
+    "malayalamName": "ദൈനംദിന സംഭാഷണം",
+    "icon": "MessageCircle",
+    "description": "Everyday casual and formal spoken English sentences.",
+    "orderNumber": 1
+  },
+  {
+    "id": 2,
+    "name": "Home",
+    "slug": "home",
+    "malayalamName": "വീട്ടിലെ വിശേഷങ്ങൾ",
+    "icon": "Home",
+    "description": "English sentences used around the house with family and chores.",
+    "orderNumber": 2
+  },
+  {
+    "id": 3,
+    "name": "Family",
+    "slug": "family",
+    "malayalamName": "കുടുംബം",
+    "icon": "Users",
+    "description": "Conversations with parents, siblings, children, and relatives.",
+    "orderNumber": 3
+  },
+  {
+    "id": 4,
+    "name": "Friends",
+    "slug": "friends",
+    "malayalamName": "സുഹൃത്തുക്കൾ",
+    "icon": "Smile",
+    "description": "Casual chats, hangouts, plans, and banter with friends.",
+    "orderNumber": 4
+  },
+  {
+    "id": 5,
+    "name": "School",
+    "slug": "school",
+    "malayalamName": "സ്കൂൾ",
+    "icon": "GraduationCap",
+    "description": "Classroom, teacher interactions, homework, and exams.",
+    "orderNumber": 5
+  },
+  {
+    "id": 6,
+    "name": "College",
+    "slug": "college",
+    "malayalamName": "കോളേജ്",
+    "icon": "BookOpen",
+    "description": "Campus life, lectures, assignments, and campus placements.",
+    "orderNumber": 6
+  },
+  {
+    "id": 7,
+    "name": "Office",
+    "slug": "office",
+    "malayalamName": "ഓഫീസ്",
+    "icon": "Briefcase",
+    "description": "Professional office communication, emails, desk conversations.",
+    "orderNumber": 7
+  },
+  {
+    "id": 8,
+    "name": "Workplace",
+    "slug": "workplace",
+    "malayalamName": "തൊഴിലിടം",
+    "icon": "Building2",
+    "description": "Colleague interaction, task delegation, and work updates.",
+    "orderNumber": 8
+  },
+  {
+    "id": 9,
+    "name": "Shopping",
+    "slug": "shopping",
+    "malayalamName": "ഷോപ്പിംഗ് / സാധനങ്ങൾ വാങ്ങൽ",
+    "icon": "ShoppingBag",
+    "description": "Bargaining, asking prices, sizes, bills, and supermarket chats.",
+    "orderNumber": 9
+  },
+  {
+    "id": 10,
+    "name": "Restaurant",
+    "slug": "restaurant",
+    "malayalamName": "റെസ്റ്റോറന്റ് / ഭക്ഷണം കഴിക്കൽ",
+    "icon": "Utensils",
+    "description": "Ordering food, reserving tables, asking for the bill.",
+    "orderNumber": 10
+  },
+  {
+    "id": 11,
+    "name": "Travel",
+    "slug": "travel",
+    "malayalamName": "യാത്ര",
+    "icon": "Compass",
+    "description": "Airports, hotels, sightseeing, tickets, and tourist queries.",
+    "orderNumber": 11
+  },
+  {
+    "id": 12,
+    "name": "Bus",
+    "slug": "bus",
+    "malayalamName": "ബസ് യാത്ര",
+    "icon": "Bus",
+    "description": "Public transport, bus stops, tickets, routes, and timings.",
+    "orderNumber": 12
+  },
+  {
+    "id": 13,
+    "name": "Hospital",
+    "slug": "hospital",
+    "malayalamName": "ആശുപത്രി / ആരോഗ്യം",
+    "icon": "Activity",
+    "description": "Doctor visits, explaining symptoms, pharmacy, and emergencies.",
+    "orderNumber": 13
+  },
+  {
+    "id": 14,
+    "name": "Bank",
+    "slug": "bank",
+    "malayalamName": "ബാങ്ക്",
+    "icon": "CreditCard",
+    "description": "Opening accounts, deposits, loans, ATMs, and transfers.",
+    "orderNumber": 14
+  },
+  {
+    "id": 15,
+    "name": "Phone Calls",
+    "slug": "phone-calls",
+    "malayalamName": "ഫോൺ സംഭാഷണം",
+    "icon": "PhoneCall",
+    "description": "Making calls, leaving messages, bad connections, and greetings.",
+    "orderNumber": 15
+  },
+  {
+    "id": 16,
+    "name": "Asking Directions",
+    "slug": "asking-directions",
+    "malayalamName": "വഴി ചോദിക്കൽ",
+    "icon": "MapPin",
+    "description": "Finding locations, navigation terms, landmark inquiries.",
+    "orderNumber": 16
+  },
+  {
+    "id": 17,
+    "name": "Introduction",
+    "slug": "introduction",
+    "malayalamName": "പരിചയപ്പെടൽ",
+    "icon": "UserCheck",
+    "description": "Introducing yourself, your job, hobbies, and background.",
+    "orderNumber": 17
+  },
+  {
+    "id": 18,
+    "name": "Daily Routine",
+    "slug": "daily-routine",
+    "malayalamName": "ദിനചര്യകൾ",
+    "icon": "Clock",
+    "description": "Morning routines, habits, schedules, and sleep patterns.",
+    "orderNumber": 18
+  },
+  {
+    "id": 19,
+    "name": "Weather",
+    "slug": "weather",
+    "malayalamName": "കാലാവസ്ഥ",
+    "icon": "CloudRain",
+    "description": "Talking about rain, heat, monsoon, seasons, and forecasts.",
+    "orderNumber": 19
+  },
+  {
+    "id": 20,
+    "name": "Food",
+    "slug": "food",
+    "malayalamName": "ഭക്ഷണം പാചകം",
+    "icon": "Coffee",
+    "description": "Cooking, recipes, taste descriptions, and food preferences.",
+    "orderNumber": 20
+  },
+  {
+    "id": 21,
+    "name": "Business",
+    "slug": "business",
+    "malayalamName": "ബിസിനസ്സ്",
+    "icon": "TrendingUp",
+    "description": "Negotiations, contracts, deals, profits, and partnerships.",
+    "orderNumber": 21
+  },
+  {
+    "id": 22,
+    "name": "Interview",
+    "slug": "interview",
+    "malayalamName": "ഇന്റർവ്യൂ",
+    "icon": "Award",
+    "description": "Job interview questions, answers, strengths, and experience.",
+    "orderNumber": 22
+  },
+  {
+    "id": 23,
+    "name": "Customer Service",
+    "slug": "customer-service",
+    "malayalamName": "ഉപഭോക്തൃ സേവനം",
+    "icon": "Headphones",
+    "description": "Handling complaints, inquiries, refunds, and support.",
+    "orderNumber": 23
+  },
+  {
+    "id": 24,
+    "name": "Social Conversation",
+    "slug": "social-conversation",
+    "malayalamName": "സാമൂഹിക ഇടപഴകൽ",
+    "icon": "HeartHandshake",
+    "description": "Small talk, celebrations, condolences, and compliments.",
+    "orderNumber": 24
+  },
+  {
+    "id": 25,
+    "name": "Technology",
+    "slug": "technology",
+    "malayalamName": "സാങ്കേതികവിദ്യ / കമ്പ്യൂട്ടർ",
+    "icon": "Laptop",
+    "description": "Computers, smartphones, internet, apps, and software.",
+    "orderNumber": 25
+  },
+  {
+    "id": 26,
+    "name": "Study",
+    "slug": "study",
+    "malayalamName": "പഠനവും പരീക്ഷകളും",
+    "icon": "FileText",
+    "description": "Exam preparation, reading, library, grammar, and revisions.",
+    "orderNumber": 26
+  },
+  {
+    "id": 27,
+    "name": "Meetings",
+    "slug": "meetings",
+    "malayalamName": "യോഗങ്ങൾ / മീറ്റിംഗുകൾ",
+    "icon": "Calendar",
+    "description": "Scheduling, presenting, agreeing, and summarizing meetings.",
+    "orderNumber": 27
+  },
+  {
+    "id": 28,
+    "name": "Public Places",
+    "slug": "public-places",
+    "malayalamName": "പൊതുസ്ഥലങ്ങൾ",
+    "icon": "Globe",
+    "description": "Parks, cinema halls, post office, libraries, and markets.",
+    "orderNumber": 28
+  }
+]

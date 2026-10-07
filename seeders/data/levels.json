@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "Beginner",
+    "code": "A1",
+    "malayalamName": "തുടക്കക്കാർ (Beginner)",
+    "description": "Essential everyday phrases and basic sentence structures for beginners.",
+    "targetSentences": 2000,
+    "orderNumber": 1
+  },
+  {
+    "id": 2,
+    "name": "Elementary",
+    "code": "A2",
+    "malayalamName": "പ്രാഥമിക തലം (Elementary)",
+    "description": "Common conversational patterns for familiar situations and routines.",
+    "targetSentences": 1500,
+    "orderNumber": 2
+  },
+  {
+    "id": 3,
+    "name": "Intermediate",
+    "code": "B1",
+    "malayalamName": "ഇടത്തരം തലം (Intermediate)",
+    "description": "Expressing opinions, professional dialogues, and complex situations.",
+    "targetSentences": 1000,
+    "orderNumber": 3
+  },
+  {
+    "id": 4,
+    "name": "Upper Intermediate",
+    "code": "B2",
+    "malayalamName": "ഉന്നത ഇടത്തരം (Upper Intermediate)",
+    "description": "Fluent conversation, formal presentations, and idiomatic expressions.",
+    "targetSentences": 350,
+    "orderNumber": 4
+  },
+  {
+    "id": 5,
+    "name": "Advanced",
+    "code": "C1",
+    "malayalamName": "വിദഗ്ദ്ധ തലം (Advanced)",
+    "description": "Nuanced English, high-level negotiations, debates, and literature.",
+    "targetSentences": 150,
+    "orderNumber": 5
+  }
+]

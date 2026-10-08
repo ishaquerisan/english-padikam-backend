@@ -8,6 +8,8 @@ const router = Router();
 
 router.post('/register', registerValidationRules, validateRequest, AuthController.register);
 router.post('/login', loginValidationRules, validateRequest, AuthController.login);
+router.post('/google', AuthController.googleLogin);
+router.post('/firebase', AuthController.googleLogin);
 router.get('/me', authenticate, AuthController.me);
 
 export default router;

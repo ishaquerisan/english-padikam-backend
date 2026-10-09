@@ -14,8 +14,8 @@ import { UserActivity } from '../models/UserActivity';
 export class DailyService {
   /**
    * Deterministic Daily 5 algorithm:
-   * 1. Check user's current progress & level.
-   * 2. Find the appropriate daily lesson (Day 1, Day 2, etc.) or first uncompleted primary lesson.
+   * 1. Check user's preferred category (learningGoal) & level (englishLevel).
+   * 2. Find the active lesson for that category and level where the user has remaining unlearned sentences.
    * 3. Fetch its 5 sentences with category, level, vocabulary, bookmark and user progress status.
    * 4. Count sentences completed today.
    */
@@ -28,40 +28,70 @@ export class DailyService {
     }
 
     // Get user's daily goal target
-    let dailyGoal = await DailyGoal.findOne({ where: { userId } });
+    const dailyGoal = await DailyGoal.findOne({ where: { userId } });
     const targetGoal = dailyGoal ? dailyGoal.targetSentences : (user.dailyGoal || 5);
 
-    // Get user's registered level ID
-    const level = await Level.findOne({ where: { name: user.englishLevel || 'Beginner' } }) || await Level.findByPk(1);
+    // 1. Resolve Category from user's learningGoal preference
+    let category: Category | null = null;
+    if (user.learningGoal) {
+      const isNum = !isNaN(Number(user.learningGoal));
+      category = await Category.findOne({
+        where: {
+          [Op.or]: [
+            { name: user.learningGoal },
+            { slug: user.learningGoal },
+            ...(isNum ? [{ id: Number(user.learningGoal) }] : []),
+          ],
+        },
+      });
+    }
+
+    if (!category) {
+      category = (await Category.findOne({ where: { name: 'Daily Conversation' } })) || (await Category.findByPk(1));
+    }
+    const categoryId = category ? category.id : 1;
+
+    // 2. Resolve Level from user's englishLevel preference
+    let level: Level | null = null;
+    if (user.englishLevel) {
+      const isNum = !isNaN(Number(user.englishLevel));
+      level = await Level.findOne({
+        where: {
+          [Op.or]: [
+            { name: user.englishLevel },
+            { code: user.englishLevel },
+            ...(isNum ? [{ id: Number(user.englishLevel) }] : []),
+          ],
+        },
+      });
+    }
+
+    if (!level) {
+      level = (await Level.findOne({ where: { name: 'Beginner' } })) || (await Level.findByPk(1));
+    }
     const levelId = level ? level.id : 1;
 
-    // Deterministic selection: find the lowest lessonNumber where sentences are not all mastered, or sequential based on user totalLearningDays + 1
-    const userCompletedSentencesCount = await UserSentenceProgress.count({
+    // 3. Find candidate active lessons prioritizing (categoryId, levelId)
+    let candidateLessons = await Lesson.findAll({
       where: {
-        userId,
-        status: { [Op.in]: ['LEARNED', 'MASTERED'] },
-      },
-    });
-
-    // Each lesson has 5 sentences, so lessonIndex = floor(completed / 5) + 1
-    const calculatedLessonNumber = Math.max(1, Math.floor(userCompletedSentencesCount / 5) + 1);
-
-    // Fetch the lesson
-    let lesson = await Lesson.findOne({
-      where: {
-        lessonNumber: calculatedLessonNumber,
+        categoryId,
+        levelId,
         status: 'ACTIVE',
       },
       include: [
         { model: Category, as: 'category' },
         { model: Level, as: 'level' },
       ],
+      order: [['lessonNumber', 'ASC']],
     });
 
-    if (!lesson) {
-      // Fallback to first active lesson in level
-      lesson = await Lesson.findOne({
-        where: { levelId, status: 'ACTIVE' },
+    if (candidateLessons.length === 0) {
+      // Fallback: candidate lessons in this category
+      candidateLessons = await Lesson.findAll({
+        where: {
+          categoryId,
+          status: 'ACTIVE',
+        },
         include: [
           { model: Category, as: 'category' },
           { model: Level, as: 'level' },
@@ -70,24 +100,87 @@ export class DailyService {
       });
     }
 
-    if (!lesson) {
-      // Ultimate fallback to first available lesson
-      lesson = await Lesson.findByPk(1, {
+    if (candidateLessons.length === 0) {
+      // Fallback: candidate lessons in this level
+      candidateLessons = await Lesson.findAll({
+        where: {
+          levelId,
+          status: 'ACTIVE',
+        },
         include: [
           { model: Category, as: 'category' },
           { model: Level, as: 'level' },
         ],
+        order: [['lessonNumber', 'ASC']],
       });
     }
 
-    if (!lesson) {
+    if (candidateLessons.length === 0) {
+      // Ultimate fallback: all active lessons
+      candidateLessons = await Lesson.findAll({
+        where: {
+          status: 'ACTIVE',
+        },
+        include: [
+          { model: Category, as: 'category' },
+          { model: Level, as: 'level' },
+        ],
+        order: [['lessonNumber', 'ASC']],
+      });
+    }
+
+    if (candidateLessons.length === 0) {
       throw new Error('No lesson available in the database');
     }
 
-    // Fetch exactly 5 sentences of this lesson
+    // 4. Determine which candidate lesson the user should learn today
+    const candidateLessonIds = candidateLessons.map((l) => l.id);
+
+    // Get all completed/learned sentence IDs for this user
+    const userLearnedSentences = await UserSentenceProgress.findAll({
+      where: {
+        userId,
+        status: { [Op.in]: ['LEARNED', 'MASTERED'] },
+      },
+      attributes: ['sentenceId'],
+    });
+    const learnedSentenceIdSet = new Set(userLearnedSentences.map((p) => p.sentenceId));
+
+    // Get sentences belonging to candidate lessons
+    const candidateSentences = await Sentence.findAll({
+      where: {
+        lessonId: { [Op.in]: candidateLessonIds },
+        status: 'ACTIVE',
+      },
+      attributes: ['id', 'lessonId'],
+      order: [['orderNumber', 'ASC']],
+    });
+
+    const lessonSentenceMap = new Map<number, number[]>();
+    for (const s of candidateSentences) {
+      if (!lessonSentenceMap.has(s.lessonId)) {
+        lessonSentenceMap.set(s.lessonId, []);
+      }
+      lessonSentenceMap.get(s.lessonId)!.push(s.id);
+    }
+
+    // Find the first lesson with unlearned sentences
+    let chosenLesson = candidateLessons.find((l) => {
+      const sentenceIdsInLesson = lessonSentenceMap.get(l.id) || [];
+      if (sentenceIdsInLesson.length === 0) return false;
+      const completedCount = sentenceIdsInLesson.filter((id) => learnedSentenceIdSet.has(id)).length;
+      return completedCount < sentenceIdsInLesson.length;
+    });
+
+    // If all candidate lessons are fully completed, pick the first one for review
+    if (!chosenLesson) {
+      chosenLesson = candidateLessons[0];
+    }
+
+    // 5. Fetch exactly 5 sentences of this chosen lesson
     const sentences = await Sentence.findAll({
       where: {
-        lessonId: lesson.id,
+        lessonId: chosenLesson.id,
         status: 'ACTIVE',
       },
       include: [
@@ -153,7 +246,7 @@ export class DailyService {
     }));
 
     const completedInLesson = enrichedSentences.filter((s) => s.isLearned).length;
-    const remainingInLesson = Math.max(0, 5 - completedInLesson);
+    const remainingInLesson = Math.max(0, enrichedSentences.length - completedInLesson);
 
     return {
       date: today,
@@ -161,18 +254,18 @@ export class DailyService {
       todayTotalCompleted: todayCompletedCount,
       goalCompleted: todayCompletedCount >= targetGoal,
       extraCompleted: Math.max(0, todayCompletedCount - targetGoal),
-      lessonCompleted: completedInLesson === 5,
+      lessonCompleted: enrichedSentences.length > 0 && completedInLesson === enrichedSentences.length,
       completedInLesson,
       remainingInLesson,
       lesson: {
-        id: lesson.id,
-        lessonNumber: lesson.lessonNumber,
-        dayNumber: lesson.dayNumber,
-        title: lesson.title,
-        malayalamTitle: lesson.malayalamTitle,
-        description: lesson.description,
-        category: lesson.category,
-        level: lesson.level,
+        id: chosenLesson.id,
+        lessonNumber: chosenLesson.lessonNumber,
+        dayNumber: chosenLesson.dayNumber,
+        title: chosenLesson.title,
+        malayalamTitle: chosenLesson.malayalamTitle,
+        description: chosenLesson.description,
+        category: chosenLesson.category,
+        level: chosenLesson.level,
       },
       sentences: enrichedSentences,
     };
